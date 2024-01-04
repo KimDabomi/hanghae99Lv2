@@ -33,7 +33,7 @@ public class LoanService {
         // Loan 생성 및 저장
         Loan loan = new Loan();
         loan.setBook(book, member);
-        loanRepository.save(loan);
-        return null;
+        Loan saveLoan = loanRepository.save(loan);
+        return new LoanResponseDto(saveLoan);
     }
 }

@@ -24,7 +24,7 @@ public class Loan {
     @Column(name = "loan_date", nullable = false)
     private LocalDate loanDate;
 
-    @Column(name = "return_status", nullable = false)
+    @Column(name = "loan_status", nullable = false)
     private boolean loanStatus;
 
     @Column(name = "return_date")
@@ -37,6 +37,7 @@ public class Loan {
         this.book = book;
         this.member = member;
         this.loanDate = LocalDate.now();
+        this.loanStatus = true;
         this.returnStatus = false;
     }
 }
