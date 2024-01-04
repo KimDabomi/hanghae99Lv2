@@ -2,9 +2,7 @@ package com.hh99.level2.service;
 
 import com.hh99.level2.dto.LoanRequestDto;
 import com.hh99.level2.dto.LoanResponseDto;
-import com.hh99.level2.entity.Book;
 import com.hh99.level2.entity.Loan;
-import com.hh99.level2.entity.Member;
 import com.hh99.level2.repository.ReturnRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
