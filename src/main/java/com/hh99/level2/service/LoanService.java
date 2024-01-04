@@ -10,6 +10,9 @@ import com.hh99.level2.repository.LoanRepository;
 import com.hh99.level2.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class LoanService {
     private final LoanRepository loanRepository;
@@ -26,14 +29,23 @@ public class LoanService {
         Long bookId = requestDto.getBookId();
         Long memberId = requestDto.getMemberId();
 
-        // Book 및 Member 엔터티 조회
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("Member not found"));
 
-        // Loan 생성 및 저장
+        List<Loan> existingBookLoans = loanRepository.findByBookAndReturnStatusFalse(book);
+        List<Loan> existingMemberLoans = loanRepository.findByMemberAndReturnStatusFalse(member);
+
+        if (!existingBookLoans.isEmpty()) {
+            throw new IllegalArgumentException("현재 대출 상태인 도서입니다.");
+        }
+
+        if (!existingMemberLoans.isEmpty()) {
+            throw new IllegalArgumentException("반납하지 않은 도서가 있기 때문에, 대출이 불가능합니다.");
+        }
+
         Loan loan = new Loan();
         loan.setBook(book, member);
         Loan saveLoan = loanRepository.save(loan);
-        return new LoanResponseDto(saveLoan);
+        return new LoanResponseDto(saveLoan, "[SUCCESS] 도서 대출이 완료되었습니다.");
     }
 }
