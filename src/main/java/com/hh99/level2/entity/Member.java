@@ -4,11 +4,9 @@ import com.hh99.level2.dto.MemberRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "members")
 @NoArgsConstructor
 public class Member {
@@ -33,6 +31,10 @@ public class Member {
 
     @Column(name = "penalty")
     private int penalty;
+
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
+    }
 
     public Member(MemberRequestDto requestDto) {
         this.name = requestDto.getName();
