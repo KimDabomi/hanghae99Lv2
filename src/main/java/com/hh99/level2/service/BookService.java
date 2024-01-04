@@ -30,8 +30,10 @@ public class BookService {
 
     // 도서 상세 조회
     public BookResponseDto find(Long bookId){
-        return new BookResponseDto(bookRepository.findById(bookId)
-                .orElseThrow(() -> new EntityNotFoundException("도서가 없습니다."))
-        );
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("없는 도서 입니다."));
+        BookResponseDto bookResponseDto = new BookResponseDto(book);
+        bookResponseDto.setId(book.getId());
+        return bookResponseDto;
     }
 }

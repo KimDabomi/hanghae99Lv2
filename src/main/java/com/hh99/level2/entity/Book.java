@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Getter
 @Table(name="books")
+@Entity
 @NoArgsConstructor
+@Getter
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
