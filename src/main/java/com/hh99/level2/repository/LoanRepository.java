@@ -10,4 +10,5 @@ import java.util.List;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findByBookAndReturnStatusFalse(Book book);
     List<Loan> findByMemberAndReturnStatusFalse(Member member);
+    List<Loan> findByMemberOrderByLoanDateAsc(Member member);
 }

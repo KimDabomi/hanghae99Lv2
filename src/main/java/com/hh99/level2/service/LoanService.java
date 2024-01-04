@@ -1,5 +1,6 @@
 package com.hh99.level2.service;
 
+import com.hh99.level2.dto.LoanHistoryDto;
 import com.hh99.level2.dto.LoanRequestDto;
 import com.hh99.level2.dto.LoanResponseDto;
 import com.hh99.level2.entity.Book;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LoanService {
@@ -47,5 +49,21 @@ public class LoanService {
         loan.setBook(book, member);
         Loan saveLoan = loanRepository.save(loan);
         return new LoanResponseDto(saveLoan, "[SUCCESS] 도서 대출이 완료되었습니다.");
+    }
+
+    public List<LoanHistoryDto> getLoanHistoryForMember(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+
+        List<Loan> loanHistory = loanRepository.findByMemberOrderByLoanDateAsc(member);
+
+        return loanHistory.stream()
+                .map(loan -> new LoanHistoryDto(
+                        loan.getMember().getName(),
+                        loan.getMember().getPhone(),
+                        loan.getBook().getTitle(),
+                        loan.getBook().getAuthor(),
+                        loan.getLoanDate()
+                ))
+                .collect(Collectors.toList());
     }
 }
