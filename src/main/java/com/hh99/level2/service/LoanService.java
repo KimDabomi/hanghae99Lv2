@@ -52,9 +52,9 @@ public class LoanService {
     }
 
     public List<LoanHistoryDto> getLoanHistoryForMember(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        List<Loan> loanHistory = loanRepository.findByMemberOrderByLoanDateAsc(member);
+        List<Loan> loanHistory = loanRepository.findByMemberAndReturnStatusOrderByLoanDateAsc(member, false);
 
         return loanHistory.stream()
                 .map(loan -> new LoanHistoryDto(
