@@ -1,4 +1,4 @@
-package com.hh99.level2.Controller;
+package com.hh99.level2.controller;
 
 import com.hh99.level2.dto.MemberRequestDto;
 import com.hh99.level2.dto.MemberResponseDto;

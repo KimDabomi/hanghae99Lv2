@@ -21,14 +21,17 @@ public class Loan {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(name = "return_status", nullable = false)
-    private boolean returnStatus;
-
     @Column(name = "loan_date", nullable = false)
     private LocalDate loanDate;
 
+    @Column(name = "return_status", nullable = false)
+    private boolean loanStatus;
+
     @Column(name = "return_date")
     private LocalDate returnDate;
+
+    @Column(name = "return_status", nullable = false)
+    private boolean returnStatus;
 
     public void setBook(Book book, Member member) {
         this.book = book;
