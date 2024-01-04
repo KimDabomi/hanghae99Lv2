@@ -1,11 +1,7 @@
 package com.hh99.level2.controller;
 
-import com.hh99.level2.dto.BookRequestDto;
 import com.hh99.level2.dto.LoanRequestDto;
 import com.hh99.level2.dto.LoanResponseDto;
-import com.hh99.level2.dto.MemberRequestDto;
-import com.hh99.level2.entity.Book;
-import com.hh99.level2.entity.Member;
 import com.hh99.level2.service.ReturnService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -21,6 +17,6 @@ public class ReturnController {
 
     @PutMapping("/return")
     public LoanResponseDto bookReturn(@RequestBody LoanRequestDto loanRequestDto){
-        returnService.bookReturn(loanRequestDto);
+        return returnService.bookReturn(loanRequestDto);
     }
 }
