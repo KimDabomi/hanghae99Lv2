@@ -22,7 +22,7 @@ public class LoanService {
         this.memberRepository = memberRepository;
     }
 
-    public void createLoan(LoanRequestDto requestDto) {
+    public LoanResponseDto createLoan(LoanRequestDto requestDto) {
         Long bookId = requestDto.getBookId();
         Long memberId = requestDto.getMemberId();
 
@@ -34,5 +34,6 @@ public class LoanService {
         Loan loan = new Loan();
         loan.setBook(book, member);
         loanRepository.save(loan);
+        return null;
     }
 }
