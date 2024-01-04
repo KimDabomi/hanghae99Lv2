@@ -36,6 +36,6 @@ public class Book {
         this.author = bookRequestDto.getAuthor();
         this.lang = bookRequestDto.getLang();
         this.company = bookRequestDto.getCompany();
-        this.regDate = bookRequestDto.getRegDate();
+        this.regDate = LocalDateTime.now();
     }
 }
