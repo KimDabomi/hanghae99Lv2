@@ -16,8 +16,9 @@ public class LoanResponseDto {
     private LocalDate returnDate;
     private boolean returnStatus;
     private boolean loanStatus;
+    private String successMessage;
 
-    public LoanResponseDto(Loan loan) {
+    public LoanResponseDto(Loan loan, String successMessage) {
         this.id = loan.getId();
         this.book = loan.getBook();
         this.member = loan.getMember();
@@ -25,5 +26,6 @@ public class LoanResponseDto {
         this.loanStatus = loan.isLoanStatus();
         this.returnDate = loan.getReturnDate();
         this.returnStatus = loan.isReturnStatus();
+        this.successMessage = successMessage;
     }
 }
