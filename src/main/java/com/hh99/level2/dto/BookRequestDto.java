@@ -1,6 +1,5 @@
 package com.hh99.level2.dto;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

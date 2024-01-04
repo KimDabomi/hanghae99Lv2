@@ -1,12 +1,10 @@
 package com.hh99.level2.entity;
 
-import com.hh99.level2.dto.LoanRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
