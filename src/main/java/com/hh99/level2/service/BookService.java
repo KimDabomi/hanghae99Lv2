@@ -16,20 +16,17 @@ import java.util.stream.Collectors;
 public class BookService {
     private final BookRepository bookRepository;
 
-    // 도서 등록 기능
-    public BookResponseDto save(BookRequestDto bookRequestDto){
+    public BookResponseDto createBook(BookRequestDto bookRequestDto){
         return new BookResponseDto(bookRepository.save(new Book(bookRequestDto)));
     }
 
-    // 도서 전체 조회
-    public List<BookResponseDto> findAll(){
+    public List<BookResponseDto> getBooks(){
         return bookRepository.findAll().stream()
                 .map(BookResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    // 도서 상세 조회
-    public BookResponseDto find(Long bookId){
+    public BookResponseDto getBook(Long bookId){
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("없는 도서 입니다."));
 

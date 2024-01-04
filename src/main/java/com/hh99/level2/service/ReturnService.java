@@ -16,10 +16,8 @@ import java.time.LocalDate;
 public class ReturnService {
     private final ReturnRepository returnRepository;
 
-    // 선택한 도서 반납
     @Transactional
     public LoanResponseDto bookReturn(LoanRequestDto loanRequestDto){
-        // 이미 대출을 한 상태인지 확인
         Loan loan = returnRepository.findByBookIdAndMemberId(loanRequestDto.getBookId(), loanRequestDto.getMemberId());
 
         if(loan == null){
