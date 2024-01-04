@@ -12,16 +12,18 @@ public class LoanResponseDto {
     private Long id;
     private Book book;
     private Member member;
-    private boolean returnStatus;
     private LocalDate loanDate;
     private LocalDate returnDate;
+    private boolean returnStatus;
+    private boolean loanStatus;
 
     public LoanResponseDto(Loan loan) {
         this.id = loan.getId();
         this.book = loan.getBook();
         this.member = loan.getMember();
-        this.returnStatus = loan.isReturnStatus();
         this.loanDate = loan.getLoanDate();
+        this.loanStatus = loan.isLoanStatus();
         this.returnDate = loan.getReturnDate();
+        this.returnStatus = loan.isReturnStatus();
     }
 }
