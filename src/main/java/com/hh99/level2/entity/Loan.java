@@ -1,9 +1,12 @@
 package com.hh99.level2.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.time.LocalDate;
 
 @Entity
+@Getter
 @Table(name = "loans")
 public class Loan {
     @Id
@@ -27,15 +30,10 @@ public class Loan {
     @Column(name = "return_date")
     private LocalDate returnDate;
 
-    public Loan(Book book, Member member, LocalDate loanDate) {
+    public void setBook(Book book, Member member) {
         this.book = book;
         this.member = member;
+        this.loanDate = LocalDate.now();
         this.returnStatus = false;
-        this.loanDate = loanDate;
-    }
-
-    public void markAsReturned(LocalDate returnDate) {
-        this.returnStatus = true;
-        this.returnDate = returnDate;
     }
 }
