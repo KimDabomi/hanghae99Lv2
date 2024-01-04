@@ -16,19 +16,19 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(nullable = false)
     private String author;
 
-    @Column
+    @Column(nullable = false)
     private String lang;
 
-    @Column
+    @Column(nullable = false)
     private String company;
 
-    @Column(name="reg_date")
+    @Column(name="reg_date", nullable = false)
     private LocalDateTime regDate;
 
     public Book(BookRequestDto bookRequestDto){
