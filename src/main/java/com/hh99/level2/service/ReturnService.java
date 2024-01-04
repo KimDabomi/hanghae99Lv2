@@ -28,6 +28,7 @@ public class ReturnService {
             throw new IllegalArgumentException("이미 해당 도서는 반납을 하였습니다.");
         }
 
+        loan.setLoanStatus(false);
         loan.setReturnStatus(true);
         loan.setReturnDate(LocalDate.now());
 

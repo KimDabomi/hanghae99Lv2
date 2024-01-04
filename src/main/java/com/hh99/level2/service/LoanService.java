@@ -9,8 +9,11 @@ import com.hh99.level2.entity.Member;
 import com.hh99.level2.repository.BookRepository;
 import com.hh99.level2.repository.LoanRepository;
 import com.hh99.level2.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,5 +67,24 @@ public class LoanService {
                         loan.getLoanDate()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void getLoanOverdueBooks(){
+        List<Loan> loanList = loanRepository.findAll()
+                .stream()
+                .filter(loan -> Period.between(loan.getLoanDate(), LocalDate.now()).getDays() >= 1)
+                .collect(Collectors.toList());
+
+        loanList.forEach(
+                loan -> {
+                    if(loan.getMember().getPenalty() <= 0){
+                        loan.getMember().setPenalty(14);
+                    } else {
+                        int penalty = loan.getMember().getPenalty();
+                        loan.getMember().setPenalty(penalty-1);
+                    }
+                }
+        );
     }
 }

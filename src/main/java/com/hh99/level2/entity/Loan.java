@@ -25,6 +25,7 @@ public class Loan {
     @Column(name = "loan_date", nullable = false)
     private LocalDate loanDate;
 
+    @Setter
     @Column(name = "loan_status", nullable = false)
     private boolean loanStatus;
 
