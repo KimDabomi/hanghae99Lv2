@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class MemberRequestDto {
-    private Long id;
     private String name;
     private String gender;
     private String idNumber;
