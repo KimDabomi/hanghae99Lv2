@@ -32,8 +32,10 @@ public class BookService {
     public BookResponseDto find(Long bookId){
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("없는 도서 입니다."));
+
         BookResponseDto bookResponseDto = new BookResponseDto(book);
         bookResponseDto.setId(book.getId());
+
         return bookResponseDto;
     }
 }
