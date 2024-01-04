@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public String handleIllegalArgumentException(IllegalArgumentException e) {
-        return "[ERROR] " + e.getMessage();
+        return e.getMessage();
     }
+
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public String handleEntityNotFoundException(EntityNotFoundException e) {
-        return "[ERROR] " + e.getMessage();
+        return e.getMessage();
     }
 }

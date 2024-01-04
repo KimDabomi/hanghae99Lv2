@@ -3,6 +3,7 @@ package com.hh99.level2.service;
 import com.hh99.level2.dto.BookRequestDto;
 import com.hh99.level2.dto.BookResponseDto;
 import com.hh99.level2.entity.Book;
+import com.hh99.level2.message.ErrorMessage;
 import com.hh99.level2.repository.BookRepository;
 import com.hh99.level2.repository.LoanRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -36,8 +37,7 @@ public class BookService {
 
     public BookResponseDto getBook(Long bookId){
         Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new EntityNotFoundException("없는 도서 입니다."));
-
+                .orElseThrow(() -> new EntityNotFoundException(ErrorMessage.EXIST_BOOK_ERROR_MESSAGE.getErrorMessage()));
         boolean available = loanRepository.findByBookAndReturnStatusFalse(book).isEmpty();
 
         return new BookResponseDto(book, available);

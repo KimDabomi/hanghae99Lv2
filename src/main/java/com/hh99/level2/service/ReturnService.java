@@ -3,6 +3,8 @@ package com.hh99.level2.service;
 import com.hh99.level2.dto.LoanRequestDto;
 import com.hh99.level2.dto.LoanResponseDto;
 import com.hh99.level2.entity.Loan;
+import com.hh99.level2.message.ErrorMessage;
+import com.hh99.level2.message.SuccessMessage;
 import com.hh99.level2.repository.ReturnRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -21,17 +23,17 @@ public class ReturnService {
         Loan loan = returnRepository.findByBookIdAndMemberId(loanRequestDto.getBookId(), loanRequestDto.getMemberId());
 
         if(loan == null){
-            throw new EntityNotFoundException("없는 대출 내역 입니다.");
+            throw new EntityNotFoundException(ErrorMessage.EXIST_LOAN_ERROR_MESSAGE.getErrorMessage());
         }
 
         if(loan.isReturnStatus()){
-            throw new IllegalArgumentException("이미 해당 도서는 반납을 하였습니다.");
+            throw new IllegalArgumentException(ErrorMessage.ALREADY_RETURN_ERROR_MESSAGE.getErrorMessage());
         }
 
         loan.setLoanStatus(false);
         loan.setReturnStatus(true);
         loan.setReturnDate(LocalDate.now());
 
-        return new LoanResponseDto(loan, "[SUCCESS] 도서 반납이 완료되었습니다.");
+        return new LoanResponseDto(loan, SuccessMessage.RETURN_SUCCESS_MESSAGE.getSuccessMessage());
     }
 }

@@ -12,15 +12,6 @@ public class MemberResponseDto {
     private String address;
     private int penalty;
 
-    public MemberResponseDto(Long id, String name, String gender, String phone, String address, int penalty) {
-        this.id = id;
-        this.name = name;
-        this.gender = gender;
-        this.phone = phone;
-        this.address = address;
-        this.penalty = penalty;
-    }
-
     public MemberResponseDto(Member member) {
         this.id = member.getId();
         this.name = member.getName();

@@ -6,6 +6,8 @@ import com.hh99.level2.dto.LoanResponseDto;
 import com.hh99.level2.entity.Book;
 import com.hh99.level2.entity.Loan;
 import com.hh99.level2.entity.Member;
+import com.hh99.level2.message.ErrorMessage;
+import com.hh99.level2.message.SuccessMessage;
 import com.hh99.level2.repository.BookRepository;
 import com.hh99.level2.repository.LoanRepository;
 import com.hh99.level2.repository.MemberRepository;
@@ -19,6 +21,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class LoanService {
+    private static final int ONE_DAY = 1;
+    private static final int ZERO = 0;
+    private static final int TWO_WEEKS = 14;
     private final LoanRepository loanRepository;
     private final BookRepository bookRepository;
     private final MemberRepository memberRepository;
@@ -33,28 +38,28 @@ public class LoanService {
         Long bookId = requestDto.getBookId();
         Long memberId = requestDto.getMemberId();
 
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException(ErrorMessage.EXIST_BOOK_ERROR_MESSAGE.getErrorMessage()));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException(ErrorMessage.EXIST_MEMBER_ERROR_MESSAGE.getErrorMessage()));
 
         List<Loan> existingBookLoans = loanRepository.findByBookAndReturnStatusFalse(book);
         List<Loan> existingMemberLoans = loanRepository.findByMemberAndReturnStatusFalse(member);
 
         if (!existingBookLoans.isEmpty()) {
-            throw new IllegalArgumentException("현재 대출 상태인 도서입니다.");
+            throw new IllegalArgumentException(ErrorMessage.LOAN_STATUS_BOOK_ERROR_MESSAGE.getErrorMessage());
         }
 
         if (!existingMemberLoans.isEmpty()) {
-            throw new IllegalArgumentException("반납하지 않은 도서가 있기 때문에, 대출이 불가능합니다.");
+            throw new IllegalArgumentException(ErrorMessage.RETURN_STATUS_BOOK_ERROR_MESSAGE.getErrorMessage());
         }
 
         Loan loan = new Loan();
         loan.setBook(book, member);
         Loan saveLoan = loanRepository.save(loan);
-        return new LoanResponseDto(saveLoan, "[SUCCESS] 도서 대출이 완료되었습니다.");
+        return new LoanResponseDto(saveLoan, SuccessMessage.LOAN_SUCCESS_MESSAGE.getSuccessMessage());
     }
 
     public List<LoanHistoryDto> getLoanHistoryForMember(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException(ErrorMessage.EXIST_MEMBER_ERROR_MESSAGE.getErrorMessage()));
 
         List<Loan> loanHistory = loanRepository.findByMemberAndReturnStatusOrderByLoanDateAsc(member, false);
 
@@ -73,16 +78,16 @@ public class LoanService {
     public void getLoanOverdueBooks(){
         List<Loan> loanList = loanRepository.findAll()
                 .stream()
-                .filter(loan -> Period.between(loan.getLoanDate(), LocalDate.now()).getDays() >= 1)
-                .collect(Collectors.toList());
+                .filter(loan -> Period.between(loan.getLoanDate(), LocalDate.now()).getDays() >= ONE_DAY)
+                .toList();
 
         loanList.forEach(
                 loan -> {
-                    if(loan.getMember().getPenalty() <= 0){
-                        loan.getMember().setPenalty(14);
+                    if(loan.getMember().getPenalty() <= ZERO){
+                        loan.getMember().setPenalty(TWO_WEEKS);
                     } else {
                         int penalty = loan.getMember().getPenalty();
-                        loan.getMember().setPenalty(penalty-1);
+                        loan.getMember().setPenalty(penalty - 1);
                     }
                 }
         );

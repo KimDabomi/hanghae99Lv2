@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class SchedulerMember {
-
     private final LoanService loanService;
 
     @Scheduled(cron = "0 0 12 * * *")

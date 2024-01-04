@@ -3,7 +3,6 @@ package com.hh99.level2.dto;
 import com.hh99.level2.entity.Book;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
