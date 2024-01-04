@@ -4,6 +4,7 @@ import com.hh99.level2.dto.BookRequestDto;
 import com.hh99.level2.dto.BookResponseDto;
 import com.hh99.level2.entity.Book;
 import com.hh99.level2.repository.BookRepository;
+import com.hh99.level2.repository.LoanRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,14 +16,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
+    private final LoanRepository loanRepository;
 
     public BookResponseDto createBook(BookRequestDto bookRequestDto){
-        return new BookResponseDto(bookRepository.save(new Book(bookRequestDto)));
+        Book savedBook = bookRepository.save(new Book(bookRequestDto));
+        return new BookResponseDto(savedBook, false);
     }
 
     public List<BookResponseDto> getBooks(){
         return bookRepository.findAll().stream()
-                .map(BookResponseDto::new)
+                .map(book -> new BookResponseDto(book, false))
                 .collect(Collectors.toList());
     }
 
@@ -30,9 +33,8 @@ public class BookService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new EntityNotFoundException("없는 도서 입니다."));
 
-        BookResponseDto bookResponseDto = new BookResponseDto(book);
-        bookResponseDto.setId(book.getId());
+        boolean available = loanRepository.findByBookAndReturnStatusFalse(book).isEmpty();
 
-        return bookResponseDto;
+        return new BookResponseDto(book, available);
     }
 }
