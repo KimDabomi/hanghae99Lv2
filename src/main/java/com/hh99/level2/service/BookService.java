@@ -20,12 +20,17 @@ public class BookService {
 
     public BookResponseDto createBook(BookRequestDto bookRequestDto){
         Book savedBook = bookRepository.save(new Book(bookRequestDto));
-        return new BookResponseDto(savedBook, false);
+        boolean available = loanRepository.findByBookAndReturnStatusFalse(savedBook).isEmpty();
+
+        return new BookResponseDto(savedBook, available);
     }
 
     public List<BookResponseDto> getBooks(){
         return bookRepository.findAll().stream()
-                .map(book -> new BookResponseDto(book, false))
+                .map(book -> {
+                    boolean available = loanRepository.findByBookAndReturnStatusFalse(book).isEmpty();
+                    return new BookResponseDto(book, available);
+                })
                 .collect(Collectors.toList());
     }
 

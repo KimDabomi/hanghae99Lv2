@@ -43,8 +43,4 @@ public class Loan {
         this.loanStatus = true;
         this.returnStatus = false;
     }
-
-    public boolean isAvailable() {
-        return !loanStatus;
-    }
 }
