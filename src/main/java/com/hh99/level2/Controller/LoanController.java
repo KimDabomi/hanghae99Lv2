@@ -15,12 +15,12 @@ public class LoanController {
         this.loanService = loanService;
     }
 
-    @PostMapping("/loan")
+    @PostMapping("/loans")
     public LoanResponseDto createLoan(@RequestBody LoanRequestDto requestDto) {
         return loanService.createLoan(requestDto);
     }
 
-    @GetMapping("/member/loan/{memberId}")
+    @GetMapping("/members/loans/{memberId}")
     public List<LoanHistoryDto> getLoanHistoryForMember(@PathVariable Long memberId) {
         return loanService.getLoanHistoryForMember(memberId);
     }

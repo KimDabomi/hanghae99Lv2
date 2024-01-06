@@ -12,6 +12,7 @@ import com.hh99.level2.repository.BookRepository;
 import com.hh99.level2.repository.LoanRepository;
 import com.hh99.level2.repository.MemberRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class LoanService {
     private static final int ONE_DAY = 1;
     private static final int ZERO = 0;
@@ -28,11 +30,6 @@ public class LoanService {
     private final BookRepository bookRepository;
     private final MemberRepository memberRepository;
 
-    public LoanService(LoanRepository loanRepository, BookRepository bookRepository, MemberRepository memberRepository) {
-        this.loanRepository = loanRepository;
-        this.bookRepository = bookRepository;
-        this.memberRepository = memberRepository;
-    }
 
     public LoanResponseDto createLoan(LoanRequestDto requestDto) {
         Long bookId = requestDto.getBookId();
@@ -42,12 +39,11 @@ public class LoanService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException(ErrorMessage.EXIST_MEMBER_ERROR_MESSAGE.getErrorMessage()));
 
         List<Loan> existingBookLoans = loanRepository.findByBookAndReturnStatusFalse(book);
-        List<Loan> existingMemberLoans = loanRepository.findByMemberAndReturnStatusFalse(member);
-
         if (!existingBookLoans.isEmpty()) {
             throw new IllegalArgumentException(ErrorMessage.LOAN_STATUS_BOOK_ERROR_MESSAGE.getErrorMessage());
         }
-
+        
+        List<Loan> existingMemberLoans = loanRepository.findByMemberAndReturnStatusFalse(member);
         if (!existingMemberLoans.isEmpty()) {
             throw new IllegalArgumentException(ErrorMessage.RETURN_STATUS_BOOK_ERROR_MESSAGE.getErrorMessage());
         }

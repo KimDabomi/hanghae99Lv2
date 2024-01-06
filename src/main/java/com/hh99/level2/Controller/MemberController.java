@@ -16,12 +16,12 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @PostMapping("/member")
+    @PostMapping("/members")
     public MemberResponseDto createMember(@RequestBody MemberRequestDto requestDto) {
         return memberService.createMember(requestDto);
     }
 
-    @GetMapping("/member/{id}")
+    @GetMapping("/members/{id}")
     public MemberResponseDto getMember(@PathVariable Long id) {
         return memberService.getMember(id);
     }

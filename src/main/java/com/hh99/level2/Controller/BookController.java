@@ -14,17 +14,17 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
 
-    @PostMapping("/book")
+    @PostMapping("/books")
     public BookResponseDto createBook(@RequestBody BookRequestDto bookRequestDto){
         return bookService.createBook(bookRequestDto);
     }
 
-    @GetMapping("/book")
+    @GetMapping("/books")
     public List<BookResponseDto> getBooks(){
         return bookService.getBooks();
     }
 
-    @GetMapping("/book/{bookId}")
+    @GetMapping("/books/{bookId}")
     public BookResponseDto getBook(@PathVariable Long bookId){
         return bookService.getBook(bookId);
     }
